@@ -1,0 +1,45 @@
+/*An interesting prime number is a prime number which can be written as a^2  + b^4  where a^2 and b^4 are positive integers.Yuo will be given N a positive integer and 
+you have to find the number of intereting primes less than N*/
+#include<bits/stdc++.h>
+using namespace std;
+
+const int N=1e6;
+int dp[N];
+bool prime[N];
+
+void sieve(){
+	memset(prime,true,sizeof(prime));
+	prime[1]=false;
+	for(int i=2;i*i<=N;i++){
+		if(prime[i]==true){
+		for(int j=i*i;j<=N;j+=i){
+			prime[j]=false;
+		}
+		}
+	}
+}
+
+int fun(){
+	for(int a=1;a<=1000;a++){
+		for(int b=1;b<=100;b++){
+			int sum=pow(a,2)+pow(b,4);
+			if(sum<N && prime[sum])
+			dp[sum]=1;
+		}
+	}
+}
+
+int main(){
+	int t;
+	cin>>t;
+	memset(dp,0,sizeof(dp));
+	sieve();
+	fun();
+	for(int i=1;i<=N;i++) dp[i]+=dp[i-1];
+	while(t--){
+		int n;
+		cin>>n;
+		cout<<dp[n]<<endl;
+	}
+	return 0;
+}
